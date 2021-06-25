@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name         Soraniwa_Accompany_Checker
 // @namespace    https://twitter.com/mochihiyo_fox
-// @version      1.0.0
+// @version      1.0.1
+// @updateURL    https://hiyori-mochiduki.github.io/Soraniwa_Accompany_Checker/Soraniwa_Accompany_Checker.user.js
+// @downloadURL  https://hiyori-mochiduki.github.io/Soraniwa_Accompany_Checker/Soraniwa_Accompany_Checker.user.js
 // @description  ソラニワ(リストロ)で同行者のステータス情報を上の方にまとめて表示するツール
 // @author       望月ひより
 // @match        *st.x0.to/?mode=keizoku4
