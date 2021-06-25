@@ -6,7 +6,7 @@
 // @downloadURL  https://hiyori-mochiduki.github.io/Soraniwa_Accompany_Checker/Soraniwa_Accompany_Checker.user.js
 // @description  ソラニワ(リストロ)で同行者のステータス情報を上の方にまとめて表示するツール
 // @author       望月ひより
-// @match        http*://st.x0.to/?mode=keizoku4
+// @include     http://st.x0.to/?mode=keizoku4*
 // @grant        none
 // ==/UserScript==
 
