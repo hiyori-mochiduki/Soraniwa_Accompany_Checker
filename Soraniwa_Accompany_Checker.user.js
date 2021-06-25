@@ -1,56 +1,74 @@
 // ==UserScript==
 // @name         Soraniwa_Accompany_Checker
 // @namespace    https://twitter.com/mochihiyo_fox
-// @version      1.0.2
+// @version      1.0.3
 // @updateURL    https://hiyori-mochiduki.github.io/Soraniwa_Accompany_Checker/Soraniwa_Accompany_Checker.user.js
 // @downloadURL  https://hiyori-mochiduki.github.io/Soraniwa_Accompany_Checker/Soraniwa_Accompany_Checker.user.js
 // @description  ソラニワ(リストロ)で同行者のステータス情報を上の方にまとめて表示するツール
 // @author       望月ひより
-// @include     http://st.x0.to/?mode=keizoku4*
+// @include      http://st.x0.to/?mode=keizoku4*
 // @grant        none
 // ==/UserScript==
 
 (function() {
-
     const accompany_CharaId = ["d1","d2","d3"];
 
     'use strict';
     addButton();
 
-
     function addButton() {
         var target = $("input[value='行動する']").parent();
         target.append('<input type="button" class="displaySts" value="花壇ステータス表示";"/><br />');
-        target.append('<input type="button" <a class="buttleSts" value="連れ出しメンバー表示";"/><br />');
+        target.append('<input type="button" class="buttleSts" value="連れ出しメンバー表示";"/><br />');
+        target.append('<input type="button" class="stsAllDelete" value="表示消去";"/><br />');
+        target.append('<br clear="all" id="checker_br">');
 
         $('.displaySts').click(function() {
-            delMember();
+            delGardeningStatus();
             addGardeningStatus(target);
         });
 
         $('.buttleSts').click(function() {
-            delMember();
+            delBattleDetails();
             addBattleDetails(target);
         });
 
-        function delMember() {
-            //追加したコードをいちいち削除していく（もっといい方法はないものか。）
-            accompany_CharaId.forEach(function(id) {
-                let element = document.getElementById("accompany_" + id);
-                element && element.remove();
-            });
-            document.getElementById("clonePc") && document.getElementById("clonePc").remove();
+        $('.stsAllDelete').click(function() {
+            stsAllDelete();
+        });
+
+        function stsAllDelete() {
+            delGardeningStatus();
+            delBattleDetails();
+        };
+        function delGardeningStatus() {
             document.getElementById("gardeningStsTbl") && document.getElementById("gardeningStsTbl").remove();
             document.getElementById("gardeningStsTblBody") && document.getElementById("gardeningStsTblBody").remove();
             document.getElementById("gardeningStsTblWat") && document.getElementById("gardeningStsTblWat").remove();
             document.getElementById("gardeningStsTblComp") && document.getElementById("gardeningStsTblComp").remove();
             document.getElementById("gardeningStsTblCare") && document.getElementById("gardeningStsTblCare").remove();
-            //区切り線も削除
+            document.getElementById("gardeningSts_br") && document.getElementById("gardeningSts_br").remove();
+            document.getElementById("gardeningSts_title") && document.getElementById("gardeningSts_title").remove();
+            document.getElementById("gardeningSts_line") && document.getElementById("gardeningSts_line").remove();
+            document.getElementById("accompany_line") && document.getElementById("accompany_line").remove();
+        };
+        function delBattleDetails() {
+            //追加したコードをいちいち削除していく（もっといい方法はないものか。）
+            accompany_CharaId.forEach(function(id) {
+                let element = document.getElementById("accompany_" + id);
+                element && element.remove();
+            });
+            document.getElementById("accompany_title") && document.getElementById("accompany_title").remove();
+            document.getElementById("clonePc") && document.getElementById("clonePc").remove();
             document.getElementById("accompany_br") && document.getElementById("accompany_br").remove();
             document.getElementById("accompany_line") && document.getElementById("accompany_line").remove();
+            document.getElementById("gardeningSts_line") && document.getElementById("gardeningSts_line").remove();
         };
 
         function addGardeningStatus(target) {
+
+            target.append('<h2 class="subtitle" id="gardeningSts_title">花壇ステータス表示</h2>');
+
             //自キャラのデータ取得
             var elements = document.getElementsByClassName("charaframeself");
             var pcENo = elements[0].id;
@@ -76,17 +94,16 @@
             target.append('<tr class="odd" id="gardeningStsTblWat"><td align="center"><span class="markp marki0">水やり</span></td><td align="center">' + watering_sts + '</td>');
             target.append('<tr class="even" id="gardeningStsTblComp"><td align="center"><span class="markp marki0">施肥</span></td><td align="center">' + compost_sts + '</td>');
             target.append('<tr class="odd" id="gardeningStsTblCare"><td align="center"><span class="markp marki0">手入れ</span></td><td align="center">' + care_sts + '</td></tbody></table>');
-
-            //区切り線の表示、後で消すためにユニークなIDをつけておく。
-            target.append('<br clear="all" id="accompany_br">');
-            target.append('<h2 class="subtitle" id="accompany_line"> </h2>');
+            target.append('<br clear="all" id="gardeningSts_br">');
+            target.append('<h2 class="subtitle" id="gardeningSts_line"> </h2>');
         }
 
         function addBattleDetails(target) {
+            target.append('<h2 class="subtitle" id="accompany_title">連れ出しメンバー一覧</h2>');
+
             addPlayerCharactorDetail(target);
             addMemberDetails(target);
 
-            //区切り線の表示、後で消すためにユニークなIDをつけておく。
             target.append('<br clear="all" id="accompany_br">');
             target.append('<h2 class="subtitle" id="accompany_line"> </h2>');
         }
@@ -94,7 +111,6 @@
         function addPlayerCharactorDetail(target) {
             //自キャラのステータスを取得して上部に表示
             var elements = document.getElementsByClassName("charaframeself");
-            console.log(elements)
             var pcENo = elements[0].id;
             var pc = document.getElementById(pcENo);
             var clone_pc = pc.cloneNode(true);
