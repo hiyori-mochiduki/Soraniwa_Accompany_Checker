@@ -1,20 +1,26 @@
 // ==UserScript==
 // @name         Soraniwa_Accompany_Checker
 // @namespace    https://twitter.com/mochihiyo_fox
-// @version      1.0.3
+// @version      1.1.0
 // @updateURL    https://hiyori-mochiduki.github.io/Soraniwa_Accompany_Checker/Soraniwa_Accompany_Checker.user.js
 // @downloadURL  https://hiyori-mochiduki.github.io/Soraniwa_Accompany_Checker/Soraniwa_Accompany_Checker.user.js
 // @description  ソラニワ(リストロ)で同行者のステータス情報を上の方にまとめて表示するツール
 // @author       望月ひより
 // @include      http://st.x0.to/?mode=keizoku4*
+// @include      https://st.x0.to/?mode=keizoku4*
+// @include      http://st.x0.to/
+// @include      https://st.x0.to/
 // @grant        none
 // ==/UserScript==
 
 (function() {
     const accompany_CharaId = ["d1","d2","d3"];
-
     'use strict';
-    addButton();
+
+    //各種行動画面かどうか判定
+    if(document.title == "各種行動 -Stroll Green-"){
+        addButton();
+    }
 
     function addButton() {
         var target = $("input[value='行動する']").parent();
